@@ -6,7 +6,7 @@ import sklearn
 warnings.filterwarnings('ignore')
 
 st.title('Fetal Health Classification: A Machine Learning App 👶')
-st.image('fetal_health_image.gif', use_column_width=True, caption="Utilize advanced machine learning application to predict health classification!")
+st.image('fetal_health_image.gif', use_container_width=True, caption="Utilize advanced machine learning application to predict health classification!")
 st.write("This app uses multiple inputs to predict the health of fetuses") 
 st.divider()
 
@@ -14,7 +14,7 @@ st.divider()
 def load_data(uploaded_file):
     return pd.read_csv(uploaded_file) if uploaded_file is not None else None
 
-#Chat GT helped with this
+#Chat GPT helped with this
 def highlight_predicted_class(row):
     color = ''
     if row['Predicted Class'] == 'Normal':
