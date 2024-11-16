@@ -6,7 +6,7 @@ import sklearn
 warnings.filterwarnings('ignore')
 
 st.title('Fetal Health Classification: A Machine Learning App 👶')
-st.image('fetal_health_image.gif', use_column_width=True, caption="Utilize advanced machine learning application to predict health classification!")
+st.image('fetal_health_image.gif', use_container_width=True, caption="Utilize advanced machine learning application to predict health classification!")
 st.write("This app uses multiple inputs to predict the health of fetuses") 
 st.divider()
 
@@ -30,8 +30,11 @@ default_df = pd.read_csv('fetal_health.csv')
 default_df.head()
 
 with st.sidebar.form("user_input_form"):
-    model_selection = st.selectbox("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
     uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], help="Upload your CSV file with fetal health details.")
+    if uploaded_file:
+        st.dataframe(pd.read_csv(uploaded_file))
+        model_selection = st.multiselect("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
+
     submit_button = st.form_submit_button("Predict")
 
 
@@ -58,6 +61,8 @@ if model_selection:
 
 
 if uploaded_file:
+    # Chat GPT helped with this styling
+    st.markdown("<h4 style='color: green;'>✅ CSV Successfully uploaded.</h4>", unsafe_allow_html=True)
     original_df = load_data(uploaded_file)
     encode_df = default_df.copy().drop(columns=['fetal_health'], errors='ignore')
     encode_df = pd.concat([encode_df, original_df])
@@ -95,110 +100,110 @@ else:
     st.markdown("<h4 style='color: red;'>❌ Please upload a CSV file to predict.</h4>", unsafe_allow_html=True)
 
 
+if uploaded_file: 
+    if model_selection == 'Decision Tree':
 
-if model_selection == 'Decision Tree':
+        # Showing additional items in tabs
+        st.subheader("Prediction Performance")
+        tab1, tab2, tab3, tab4 = st.tabs(["Decision Tree", "Feature Importance", "Confusion Matrix", "Classification Report"])
 
-    # Showing additional items in tabs
-    st.subheader("Prediction Performance")
-    tab1, tab2, tab3, tab4 = st.tabs(["Decision Tree", "Feature Importance", "Confusion Matrix", "Classification Report"])
+        # Tab 1: Visualizing Decision Tree
+        with tab1:
+            st.write("### Decision Tree Visualization")
+            st.image('dt_vis.svg')
+            st.caption("Visualization of the Decision Tree used in prediction.")
 
-    # Tab 1: Visualizing Decision Tree
-    with tab1:
-        st.write("### Decision Tree Visualization")
-        st.image('dt_vis.svg')
-        st.caption("Visualization of the Decision Tree used in prediction.")
+        # Tab 2: Feature Importance Visualization
+        with tab2:
+            st.write("### Feature Importance")
+            st.image('DT_imp.svg')
+            st.caption("Features used in this prediction are ranked by relative importance.")
+
+        # Tab 3: Confusion Matrix
+        with tab3:
+            st.write("### Confusion Matrix")
+            st.image('cmdt.svg')
+            st.caption("Confusion Matrix of model predictions.")
+
+        # Tab 4: Classification Report
+        with tab4:
+            st.write("### Classification Report")
+            report_df = pd.read_csv('DT.csv', index_col = 0).transpose()
+            st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
+            st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
+
+    if model_selection == 'Random Forest':
+        
+        # Showing additional items in tabs
+        st.subheader("Prediction Performance")
+        tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
 
     # Tab 2: Feature Importance Visualization
-    with tab2:
-        st.write("### Feature Importance")
-        st.image('DT_imp.svg')
-        st.caption("Features used in this prediction are ranked by relative importance.")
+        with tab1:
+            st.write("### Feature Importance")
+            st.image('RF_imp.svg')
+            st.caption("Features used in this prediction are ranked by relative importance.")
 
-    # Tab 3: Confusion Matrix
-    with tab3:
-        st.write("### Confusion Matrix")
-        st.image('cmdt.svg')
-        st.caption("Confusion Matrix of model predictions.")
+        # Tab 3: Confusion Matrix
+        with tab2:
+            st.write("### Confusion Matrix")
+            st.image('cmrf.svg')
+            st.caption("Confusion Matrix of model predictions.")
 
-    # Tab 4: Classification Report
-    with tab4:
-        st.write("### Classification Report")
-        report_df = pd.read_csv('DT.csv', index_col = 0).transpose()
-        st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
-        st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
+        # Tab 4: Classification Report
+        with tab3:
+            st.write("### Classification Report")
+            report_df = pd.read_csv('RF.csv', index_col = 0).transpose()
+            st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
+            st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
 
-if model_selection == 'Random Forest':
-    
-    # Showing additional items in tabs
-    st.subheader("Prediction Performance")
-    tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
+    if model_selection == 'Ada Boost':
+        
+        # Showing additional items in tabs
+        st.subheader("Prediction Performance")
+        tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
 
-   # Tab 2: Feature Importance Visualization
-    with tab1:
-        st.write("### Feature Importance")
-        st.image('RF_imp.svg')
-        st.caption("Features used in this prediction are ranked by relative importance.")
+    # Tab 2: Feature Importance Visualization
+        with tab1:
+            st.write("### Feature Importance")
+            st.image('Ada_imp.svg')
+            st.caption("Features used in this prediction are ranked by relative importance.")
 
-    # Tab 3: Confusion Matrix
-    with tab2:
-        st.write("### Confusion Matrix")
-        st.image('cmrf.svg')
-        st.caption("Confusion Matrix of model predictions.")
+        # Tab 3: Confusion Matrix
+        with tab2:
+            st.write("### Confusion Matrix")
+            st.image('cmada.svg')
+            st.caption("Confusion Matrix of model predictions.")
 
-    # Tab 4: Classification Report
-    with tab3:
-        st.write("### Classification Report")
-        report_df = pd.read_csv('RF.csv', index_col = 0).transpose()
-        st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
-        st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
+        # Tab 4: Classification Report
+        with tab3:
+            st.write("### Classification Report")
+            report_df = pd.read_csv('ada.csv', index_col = 0).transpose()
+            st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
+            st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
 
-if model_selection == 'Ada Boost':
-    
-    # Showing additional items in tabs
-    st.subheader("Prediction Performance")
-    tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
+    if model_selection == 'Soft Voting (Ensemble)':
+        
+        # Showing additional items in tabs
+        st.subheader("Prediction Performance")
+        tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
 
-   # Tab 2: Feature Importance Visualization
-    with tab1:
-        st.write("### Feature Importance")
-        st.image('ADA_imp.svg')
-        st.caption("Features used in this prediction are ranked by relative importance.")
+    # Tab 2: Feature Importance Visualization
+        with tab1:
+            st.write("### Feature Importance")
+            st.image('SV_imp.svg')
+            st.caption("Features used in this prediction are ranked by relative importance.")
 
-    # Tab 3: Confusion Matrix
-    with tab2:
-        st.write("### Confusion Matrix")
-        st.image('cmada.svg')
-        st.caption("Confusion Matrix of model predictions.")
+        # Tab 3: Confusion Matrix
+        with tab2:
+            st.write("### Confusion Matrix")
+            st.image('cmsv.svg')
+            st.caption("Confusion Matrix of model predictions.")
 
-    # Tab 4: Classification Report
-    with tab3:
-        st.write("### Classification Report")
-        report_df = pd.read_csv('ada.csv', index_col = 0).transpose()
-        st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
-        st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
-
-if model_selection == 'Soft Voting (Ensemble)':
-    
-    # Showing additional items in tabs
-    st.subheader("Prediction Performance")
-    tab1, tab2, tab3 = st.tabs(["Feature Importance", "Confusion Matrix", "Classification Report"])
-
-   # Tab 2: Feature Importance Visualization
-    with tab1:
-        st.write("### Feature Importance")
-        st.image('SV_imp.svg')
-        st.caption("Features used in this prediction are ranked by relative importance.")
-
-    # Tab 3: Confusion Matrix
-    with tab2:
-        st.write("### Confusion Matrix")
-        st.image('cmsv.svg')
-        st.caption("Confusion Matrix of model predictions.")
-
-    # Tab 4: Classification Report
-    with tab3:
-        st.write("### Classification Report")
-        report_df = pd.read_csv('SV.csv', index_col = 0).transpose()
-        st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
-        st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
+        # Tab 4: Classification Report
+        with tab3:
+            st.write("### Classification Report")
+            report_df = pd.read_csv('SV.csv', index_col = 0).transpose()
+            st.dataframe(report_df.style.background_gradient(cmap='RdBu').format(precision=2))
+            st.caption("Classification Report: Precision, Recall, F1-Score, and Support for each health level.")
 
