@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import pickle
 import warnings
+import sklearn
 warnings.filterwarnings('ignore')
 
 st.title('Fetal Health Classification: A Machine Learning App 👶')
