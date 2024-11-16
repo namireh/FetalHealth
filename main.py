@@ -6,7 +6,7 @@ import sklearn
 warnings.filterwarnings('ignore')
 
 st.title('Fetal Health Classification: A Machine Learning App 👶')
-st.image('fetal_health_image.gif', use_container_width=True, caption="Utilize advanced machine learning application to predict health classification!")
+st.image('fetal_health_image.gif', use_column_width=True, caption="Utilize advanced machine learning application to predict health classification!")
 st.write("This app uses multiple inputs to predict the health of fetuses") 
 st.divider()
 
