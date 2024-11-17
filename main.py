@@ -169,7 +169,7 @@ if uploaded_file:
     # Tab 2: Feature Importance Visualization
         with tab1:
             st.write("### Feature Importance")
-            st.image('Ada_imp.svg')
+            st.image('ADA_imp.svg')
             st.caption("Features used in this prediction are ranked by relative importance.")
 
         # Tab 3: Confusion Matrix
