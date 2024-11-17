@@ -31,9 +31,13 @@ default_df.head()
 
 with st.sidebar.form("user_input_form"):
     uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], help="Upload your CSV file with fetal health details.")
-    if uploaded_file:
-        st.dataframe(pd.read_csv(uploaded_file))
-    model_selection = st.checkbox("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
+    if not uploaded_file:
+        # Chat GPT helped with this styling
+        st.markdown("<h4 style='color: yellow;'>⚠️ Make sure CSV follows this format.</h4>", unsafe_allow_html=True)
+        st.dataframe(default_df)
+    model_selection = st.selectbox("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
+    if model_selection:
+        st.write(f"## You Selected {model_selection}")
     submit_button = st.form_submit_button("Predict")
 
 
