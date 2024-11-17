@@ -35,7 +35,7 @@ with st.sidebar.form("user_input_form"):
         # Chat GPT helped with this styling
         st.markdown("<h4 style='color: yellow;'>⚠️ Make sure CSV follows this format.</h4>", unsafe_allow_html=True)
         st.dataframe(default_df)
-    model_selection = st.selectbox("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
+    model_selection = st.radio("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
     if model_selection:
         st.write(f"## You Selected {model_selection}")
     submit_button = st.form_submit_button("Predict")
