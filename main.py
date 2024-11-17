@@ -33,8 +33,7 @@ with st.sidebar.form("user_input_form"):
     uploaded_file = st.file_uploader("Upload a CSV file", type=["csv"], help="Upload your CSV file with fetal health details.")
     if uploaded_file:
         st.dataframe(pd.read_csv(uploaded_file))
-    model_selection = st.set_option("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
-
+    model_selection = st.checkbox("Select which model you'd like to utilize:", ['Decision Tree','Random Forest','Ada Boost','Soft Voting (Ensemble)'])
     submit_button = st.form_submit_button("Predict")
 
 
